@@ -1,95 +1,340 @@
-<!doctype html>
-<html>
-<head>
-  <meta http-equiv="content-type" content="txt/html; charset=utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-  <title>CJDL</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/byp189/dlj/styles1.css">
-</head>
-<body>
-  <div class="d-flex align-items-start flex-wrap">
-  <div class="card shadow m-3">
-    <h5 class="card-header">CJDL</h5>
-    <div class="card-body">
-      <h5 class="card-title"> </h5>
 
-      <div class="input-group mb-3">
 
-          <span class="input-group-text" id="basic-addon1">Long URL</span>
-
-        <input type="text" class="form-control" id="longURL" aria-describedby="basic-addon1" placeholder="Example: https://example.com/" oninput="loadUrlList()">
-      </div>
-
-      <div class="input-group mb-3">
-
-          <span class="input-group-text" id="basic-addon2">Custom Short URL</span>
-
-        <input type="text" class="form-control" id="keyPhrase" aria-describedby="basic-addon2" placeholder="As you wish">
-      </div>
-
-      <div class="input-group mb-3">
-        <button class="btn btn-primary" type="button" onclick='shorturl()' id="addBtn">Shorten it</button>
-      </div>
-
-      <div class="input-group mb-3">
-
-          <span class="input-group-text" id="basic-addon3">password</span>
-
-        <input class="form-control" type="text" value="__PASSWORD__" readonly="true" id="passwordText" aria-describedby="basic-addon3">
-      </div>
-
+    <!DOCTYPE html>
+    <html lang="zh-CN">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IEAB</title>
+    <link rel="icon" href="https://gcore.jsdelivr.net/gh/byp189/djt@master/assets/tb.png" type="image/png">
+    <style>
+    
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #000000;
+    color: #FFA500;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    }
+				
+    .fixed-elements {
+    position: static;
+    left: 0;
+    right: 0;
+    background-color: #000000;
+    z-index: 1000;
+				display: flex;
+    justify-content: space-between;
+				align-items: center;
+    padding: 1px;
+    text-align: center;
+    height: 80px; 
+    }
+    
+    .fixed-elements h3 {
+    word-wrap: break-word; 
+    word-break: break-word;
+    white-space: normal;
+    }				
+    
+    .center-content {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+    margin-top: 1px; 
+    }		
+    
+    .search-container {
+    margin-top: 1px;
+    }
+    
+    .search-bar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1px;
+    }
+    
+    .search-bar input {
+    width: 70%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+    background-color: #d0f7d0; 
+    }
+    
+    .search-bar button {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-left: none;
+    background-color: #f8f8;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    }
+    
+    .search-engines {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 8px;
+    }
+    
+    .search-engine {
+    padding: 5px 8px;
+    border: 1px solid #ccc;
+    background-color: #FF8C00;
+    border-radius: 5px;
+    cursor: pointer;
+    flex: 1 1 30%;
+    text-align: center;
+    box-sizing: border-box;
+    }
+    
+    .search-engine.active {
+    background-color: #c0c0c0;
+    }
+    
+    @media (max-width: 480px) {
+    .fixed-elements {
+    height: 110px;
+    padding: 0px;
+    }
+				
+    .search-bar input {
+    width: 80%;
+    }
+    
+    .search-engines {
+    justify-content: flex-start;
+    gap: 5px;
+    }
+    
+    .search-engine {
+    flex: 1 1 45%;
+    }
+				
+				.center-content {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    text-align: center;
+    margin-top: 20px; 
+    }		
+				
+    }
+    
+    .bottom-info {
+    position: static;
+    left: 0;
+    right: 0;
+    background-color: #000000;
+    padding: 1px 1px;
+    text-align: center;
+    z-index: 999;
+    display: static;
+    justify-content: space-between;
+    align-items: center;
+    }
+    
+    .bottom-info a {
+    color: #FFA500;  
+    }
+				
+    @media (max-width: 480px) {			
+				.bottom-info {
+				height: 130px;
+    padding: 0px;		
+    }
+    }
+				
+    #theme-switcher {
+    background-color: #800080;  
+    color: #FFD700;  
+    border: 1px solid #004d00;  
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    }
+    
+    #theme-switcher:hover {
+    background-color: #008000; 
+    }
+    
+    </style>
+    <script data-cfasync="false" nonce="26501739-0c3f-4a51-a73b-3019cea00b6a">try{(function(w,d){!function(a,b,c,d){if(a.zaraz)console.error("zaraz is loaded twice");else{a[c]=a[c]||{};a[c].executed=[];a.zaraz={deferred:[],listeners:[]};a.zaraz._v="5848";a.zaraz._n="26501739-0c3f-4a51-a73b-3019cea00b6a";a.zaraz.q=[];a.zaraz._f=function(e){return async function(){var f=Array.prototype.slice.call(arguments);a.zaraz.q.push({m:e,a:f})}};for(const g of["track","set","debug"])a.zaraz[g]=a.zaraz._f(g);a.zaraz.init=()=>{var h=b.getElementsByTagName(d)[0],i=b.createElement(d),j=b.getElementsByTagName("title")[0];j&&(a[c].t=b.getElementsByTagName("title")[0].text);a[c].x=Math.random();a[c].w=a.screen.width;a[c].h=a.screen.height;a[c].j=a.innerHeight;a[c].e=a.innerWidth;a[c].l=a.location.href;a[c].r=b.referrer;a[c].k=a.screen.colorDepth;a[c].n=b.characterSet;a[c].o=(new Date).getTimezoneOffset();if(a.dataLayer)for(const k of Object.entries(Object.entries(dataLayer).reduce(((l,m)=>({...l[1],...m[1]})),{})))zaraz.set(k[0],k[1],{scope:"page"});a[c].q=[];for(;a.zaraz.q.length;){const n=a.zaraz.q.shift();a[c].q.push(n)}i.defer=!0;for(const o of[localStorage,sessionStorage])Object.keys(o||{}).filter((q=>q.startsWith("_zaraz_"))).forEach((p=>{try{a[c]["z_"+p.slice(7)]=JSON.parse(o.getItem(p))}catch{a[c]["z_"+p.slice(7)]=o.getItem(p)}}));i.referrerPolicy="origin";i.src="/cdn-cgi/zaraz/s.js?z="+btoa(encodeURIComponent(JSON.stringify(a[c])));h.parentNode.insertBefore(i,h)};["complete","interactive"].includes(b.readyState)?zaraz.init():a.addEventListener("DOMContentLoaded",zaraz.init)}}(w,d,"zarazData","script");window.zaraz._p=async bs=>new Promise((bt=>{if(bs){bs.e&&bs.e.forEach((bu=>{try{const bv=d.querySelector("script[nonce]"),bw=bv?.nonce||bv?.getAttribute("nonce"),bx=d.createElement("script");bw&&(bx.nonce=bw);bx.innerHTML=bu;bx.onload=()=>{d.head.removeChild(bx)};d.head.appendChild(bx)}catch(by){console.error(`Error executing script: ${bu}\n`,by)}}));Promise.allSettled((bs.f||[]).map((bz=>fetch(bz[0],bz[1]))))}bt()}));zaraz._p({"e":["(function(w,d){})(window,document)"]});})(window,document)}catch(e){throw fetch("/cdn-cgi/zaraz/t"),e;};</script></head>
+    
+    <body>
+    <div class="fixed-elements">				    
+    <h3><p style="color: orange; font-weight: bold;">IEAB专用搜索 名言随机刷新,近期待完成:2025:0113YM+
+0629YM+1221YM+1223CS+XYK5次+M3YSV</h3>
+</p></h3>
+				<button id="theme-switcher">切换主题</button>    
+    </div>    
+    <div class="center-content">
+    <div class="search-container">
+    <div class="search-bar">
+    <input type="text" id="search-input" placeholder="请输入搜索内容,默认谷歌,点击以下按钮切换">
+    <button id="search-button">🔍</button>
+    </div>
+    <div class="search-engines">
+    <button class="search-engine" data-engine="google">谷歌</button>
+    <button class="search-engine" data-engine="baidu">百度</button>
+    <button class="search-engine" data-engine="zhihu">知乎</button>
+    <button class="search-engine" data-engine="reddit">红迪</button>
+    <button class="search-engine" data-engine="duckgo">DDG</button>
+    <button class="search-engine" data-engine="xda">XDA</button>
+    <button class="search-engine" data-engine="github">积盒</button>
+    <button class="search-engine" data-engine="youtube">油管</button>
+    <button class="search-engine" data-engine="bilibili">B站</button>
+    <button class="search-engine" data-engine="bing">必应</button>
+    </div>
+    </div>
     </div>
     
-    <div class="card-footer">
-      <span> <a href="www.baidu.com" target="_self">baidu</a> </span>
+    <div class="content">
+    <div id="quote-container" style="font-size: 18px; font-weight: bold; margin-top: 6px; text-align: center;"></div>
+    <p style="font-size: 18px; font-weight: bold; text-align: center;">你就是个黄焖鸡，又黄又闷又垃圾。</p>
+    </div>    
+    <div class="bottom-info">			
+    <p>
+				<a href="https://www.youtube.com" target="_blank">YTB</a>|
+				<a href="https://chatgpt.com/" target="_blank">GPT</a>|
+				<a href="https://duckduckgo.com/?q=DuckDuckGo+AI+Chat&ia=chat&duckai=1" target="_blank">DDK</a>|
+				<a href="https://ip111.cn/" target="_blank">显IP</a>|
+				<a href="https://mail.google.com/mail" target="_blank">mail</a>|
+				<a href="https://www.zhihu.com/hot" target="_blank">知乎</a>|
+				<a href="https://x.com/" target="_blank">X</a>|		
+				<a href="https://panel15.serv00.com/login/" target="_blank">SV0</a>★★★★★
+    <a href="https://bj.2536629.xyz/ai" target="_blank">AI</a>|
+				<a href="https://bj.2536629.xyz/tx" target="_blank">到提</a>|
+				<a href="https://jm.2536629.xyz" target="_blank">加提</a>|
+				<a href="https://bj.2536629.xyz/sv" target="_blank">SV服</a>|
+    <a href="https://bj.2536629.xyz/gj" target="_blank">专工</a>|		
+				<a href="https://bj.2536629.xyz/gj2" target="_blank">共工</a>|
+				<a href="https://bj.2536629.xyz/fy" target="_blank">翻译</a>|
+    <a href="https://bj.2536629.xyz/bj" target="_blank">记汇</a>|		
+    <a href="https://bj.2536629.xyz" target="_blank">随记</a>|
+				<a href="https://bj.2536629.xyz/lt" target="_blank">论坛</a>|
+			 <a href="https://bj.2536629.xyz/ip" target="_blank">IP</a>|
+    <a href="https://bj.2536629.xyz/dn" target="_blank">DN控</a>|
+				<a href="https://bj.2536629.xyz/cf" target="_blank">CF</a>|
+    <a href="https://bj.2536629.xyz/yx" target="_blank">邮箱</a>|
+    <a href="https://bj.2536629.xyz/hj" target="_blank">运环</a>|
+    <a href="https://bj.2536629.xyz/ck" target="_blank">财会</a>|
+    <a href="https://bj.2536629.xyz/scdy" target="_blank">免电</a>|
+    <a href="https://bj.2536629.xyz/scgq" target="_blank">歌在</a>|
+    <a href="https://bj.2536629.xyz/ly" target="_blank">音转</a>|		
+    <a href="https://bj.2536629.xyz/wx" target="_blank">公云盘</a>|
+    <a href="https://bj.2536629.xyz/scit1" target="_blank">解藏</a>|
+    <a href="https://bj.2536629.xyz/scit2" target="_blank">教藏</a>|					
+				<a href="https://bj.2536629.xyz/cg" target="_blank">吃G</a>|	
+				<a href="https://bj.2536629.xyz/kx" target="_blank">科X</a>|
+    <a href="https://bj.2536629.xyz/gw" target="_blank">国W</a>|
+    <a href="https://bj.2536629.xyz/yt" target="_blank">Y频</a>|	联系邮箱：
+				<a href="mailto:admin@ieab.us.kg">admin@ieab.us.kg</a>
+    </p>
     </div>
-  </div>
-
-  <div class="card shadow m-3">
-    <div class="card-body">
-      <h5 class="card-title"> </h5>
-      <div class="input-group mb-3">
-        <button class="btn btn-danger" type="button" onclick='clearLocalStorage()' id="clearlocalStgBtn">clear localStorage</button>
-      </div>
-
-      <div class="card-text">
-        <div classs="list-group" id="urlList">
-          <div class="mb-3 list-group-item">
-            <div class="input-group">
-              <button type="button" class="btn btn-danger" onclick='deleteShortUrl("4sure")' id="delBtn-4sure">X</button>
-              <button type="button" class="btn btn-info" onclick='queryVisitCount("4sure")' id="qryCntBtn-4sure">?</button>
-              <span class="form-control">baidu.com</span>
-            </div>
-            <div class="form-control">
-              www.baidu.com
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  </div>
-
-  <div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="resultModalLabel">Result</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body" id="result">No result</div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" onclick='copyurl("result")' data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Copied!">Copy</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/gh/lrsjng/jquery-qrcode@0.18.0/dist/jquery-qrcode.min.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/gh/byp189/dlj/main.js" crossorigin="anonymous"></script>
+				
+    <script>
+    const searchEngines = {
+    google: "https://www.google.com/search?q=",
+    baidu: "https://www.baidu.com/s?wd=",
+    zhihu: "https://www.zhihu.com/search?q=",
+    reddit: "https://www.reddit.com/search?q=",
+    duckgo: "https://duckduckgo.com/?t=h_&q=",
+    xda: "https://xdaforums.com/search/71874194/?q=",
+    github: "https://github.com/search?q=",
+    youtube: "https://www.youtube.com/search?q=",
+    bilibili: "https://search.bilibili.com/all?vt=37930103&keyword=",
+    bing: "https://www.bing.com/search?q="
+    };
+    
+    let currentEngine = "google";
+    let currentTheme = 2; 
+    
+    function setActiveEngine(engine) {
+    currentEngine = engine;
+    document.querySelectorAll('.search-engine').forEach(btn => {
+    if (btn.dataset.engine === engine) {
+    btn.classList.add('active');
+    } else {
+    btn.classList.remove('active');
+    }
+    });
+    }
+    
+    document.getElementById('search-button').addEventListener('click', () => {
+    const query = document.getElementById('search-input').value;
+    if (query) {
+    window.open(searchEngines[currentEngine] + encodeURIComponent(query), '_blank');
+    }
+    });
+    
+    document.getElementById('search-input').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+    document.getElementById('search-button').click();
+    }
+    });
+    
+    document.querySelectorAll('.search-engine').forEach(btn => {
+    btn.addEventListener('click', () => {
+    setActiveEngine(btn.dataset.engine);
+    });
+    });
+    
+    async function getMingyan() {
+    const apiUrl = 'https://v1.hitokoto.cn/?encode=json&charset=utf-8';
+    try {
+    const response = await fetch(apiUrl);
+    if (!response.ok) {
+    return 'wfhqmy';
+    }
+    const data = await response.json();
+    const quote = data.hitokoto;
+    const from = data.from;
+    const from_who = data.from_who;
+    return `"<b>${quote}</b>"<br><i>- ${from_who ? from_who : from}</i>`;
+    } catch (error) {
+    console.error('hqmycw：', error);
+    return 'hqmysb';
+    }
+    }
+    
+    async function displayQuote() {
+    const quoteHTML = await getMingyan();
+    document.getElementById('quote-container').innerHTML = quoteHTML;
+    }
+    
+    displayQuote();		
+    
+    document.getElementById('theme-switcher').addEventListener('click', () => {
+    const themes = [
+    { background: '#e8f4ea', color: '#000', linkColor: '#000' },  
+    { background: '#f9e2b3', color: '#000', linkColor: '#000' },  
+    { background: '#000000', color: '#FFA500', linkColor: '#FFA500' }, 			
+    ];
+    
+    currentTheme = (currentTheme + 1) % themes.length;
+    const theme = themes[currentTheme];
+    
+    document.body.style.backgroundColor = theme.background;
+    document.body.style.color = theme.color;
+    
+    const links = document.querySelectorAll('.bottom-info a');
+    links.forEach(link => {
+    link.style.color = theme.linkColor; 
+    });		
+    
+    document.querySelector('.fixed-elements').style.backgroundColor = theme.background;
+    document.querySelector('.bottom-info').style.backgroundColor = theme.background;					
+    });
+    
+    </script>
 </body>
-</html>
+    </html>
+    
