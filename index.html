@@ -164,11 +164,10 @@
     }
     
     </style>
-    
+  
     <body>
     <div class="fixed-elements">				    
-    <h3><p style="color: orange; font-weight: bold;">IEAB专用搜索 名言随机刷新,近期待完成:2025:0113YM+
-0629YM+1221YM+1223CS+XYK5次+M3YSV</h3>
+    <h3><p style="color: orange; font-weight: bold;">IE**专用搜索</h3>
 </p></h3>
 				<button id="theme-switcher">切换主题</button>    
     </div>    
@@ -195,15 +194,7 @@
     
     <div class="content">
     <div id="quote-container" style="font-size: 18px; font-weight: bold; margin-top: 6px; text-align: center;"></div>
-<<<<<<< HEAD
-<<<<<<< HEAD
-    <p style="font-size: 18px; font-weight: bold; text-align: center;">测试版</p>
-=======
-    <p style="font-size: 18px; font-weight: bold; text-align: center;">你就是个黄焖鸡，又黄又闷又垃圾。</p>
->>>>>>> parent of d7be646 (2)
-=======
-    <p style="font-size: 18px; font-weight: bold; text-align: center;">你就是个黄焖鸡，又黄又闷又垃圾。</p>
->>>>>>> parent of d7be646 (2)
+    <p style="font-size: 18px; font-weight: bold; text-align: center;">测试专用。</p>
     </div>    
     <div class="bottom-info">			
     <p>
@@ -314,7 +305,9 @@
     const quoteHTML = await getMingyan();
     document.getElementById('quote-container').innerHTML = quoteHTML;
     }
-   
+    
+    displayQuote();		
+    
     document.getElementById('theme-switcher').addEventListener('click', () => {
     const themes = [
     { background: '#e8f4ea', color: '#000', linkColor: '#000' },  
@@ -338,6 +331,5 @@
     });
     
     </script>
-</body>
     </html>
     
